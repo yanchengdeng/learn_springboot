@@ -4,11 +4,8 @@ import com.maven.springboot.demo.config.BusinessException;
 import com.maven.springboot.demo.data.JsonResult;
 import com.maven.springboot.demo.data.User;
 import com.maven.springboot.demo.exception.ExceptionMsg;
-
-import org.apache.commons.logging.LogFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,10 +29,10 @@ public class ExceptionController {
      * @return
      */
     @PostMapping("/test")
-    public JsonResult test(@RequestParam(value = "name") String name,@RequestParam(value = "pass") String pass){
+    public JsonResult<User> test(@RequestParam(value = "name") String name,@RequestParam(value = "pass") String pass){
         logger.info("name :{}", name);
         logger.info("pass :{}", pass);
-        return new JsonResult(new User(name));
+        return new JsonResult<>(new User(name));
     }
 
       /**
@@ -43,10 +40,10 @@ public class ExceptionController {
      * @return
      */
     @PostMapping("/null/point")
-    public JsonResult nullPoint(){
+    public JsonResult<User> nullPoint(){
        String ss = null;
        ss.length();
-        return new JsonResult(new User());
+        return new JsonResult<>(new User());
     }
 
 
@@ -54,13 +51,13 @@ public class ExceptionController {
      * 捕获自定义异常 
      */
     @PostMapping("/catch/exception")
-    public JsonResult catchException(){
+    public JsonResult<User> catchException(){
       try {
            double  dd  = 1 / 0;
        } catch (Exception e) {
           throw new BusinessException(ExceptionMsg.ORDER_ID_NOT_EXIST);
        }
-        return new JsonResult(new User());
+        return new JsonResult<>(new User());
     }
 
 
