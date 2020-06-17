@@ -16,3 +16,6 @@ url:
   userUrl: http://dyc.userUrl.com
   shopUrl: http://dyc.shopUrl.com
   masterUrl: http://dyc.masterUrl.com
+
+swagger:
+  enable: false

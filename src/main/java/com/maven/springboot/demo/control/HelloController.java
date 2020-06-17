@@ -24,13 +24,23 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 @RestController
 /**
  * @RequestMapping  可以全局控制url 路径
  * 如 ： http://localhost:8080/start/test/server?name=hahh
  * 
+ * 
+ * 
  */
 // @RequestMapping("/start")
+
+// `@Api` 注解用于类上，表示标识这个类是 swagger 的资源。
+// swagger-ui 地址  : http://localhost:8080/demo/swagger-ui.html#/Swagger2_%E5%9C%A8%E7%BA%BF%E6%8E%A5%E5%8F%A3
+@Api(tags = "Swagger2 在线接口")
 public class HelloController{
     private String template = "Hello, %s!  hot reload ";
     private AtomicLong counter = new AtomicLong();
@@ -45,7 +55,12 @@ public class HelloController{
     @Resource
     private ApplicationValues applicationValues;
 
-    @RequestMapping("/hello")
+
+    /**
+     * 如果没有指定   method 类型  ，swagger-ui 则会全部展示
+     * @return
+     */
+    @GetMapping(value = "/hello")
     public String hello(){
         return "say hello world";
     }
@@ -79,7 +94,8 @@ public class HelloController{
      *  使用实体类  接受参数 不用加  @RequestParam 注解了
      */
     @RequestMapping("/submit")
-    public User submitUserInfo(User user){
+    @ApiOperation(value = "提交用户信息")//`@ApiOperation` 注解用于方法，表示一个 http 请求的操作。
+    public User submitUserInfo(@ApiParam(value = "用户信息") User user){//`@ApiParam` 注解用于参数上，用来标明参数信息。
         return user;
     }
 
