@@ -38,5 +38,12 @@ public class User {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+	public User(String name) {
+		this.name = name;
+	}
+
+	public User(){
+		
+	}
     
 }
