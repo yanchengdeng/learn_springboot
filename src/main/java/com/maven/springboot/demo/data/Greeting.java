@@ -1,4 +1,4 @@
-package com.maven.springboot.demo;
+package com.maven.springboot.demo.data;
 
 /**
  * 

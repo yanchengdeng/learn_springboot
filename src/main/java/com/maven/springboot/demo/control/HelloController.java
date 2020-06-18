@@ -1,41 +1,67 @@
 package com.maven.springboot.demo.control;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 import javax.annotation.Resource;
-import com.maven.springboot.demo.Greeting;
+import com.maven.springboot.demo.data.Greeting;
+import com.maven.springboot.demo.config.ApplicationValues;
 import com.maven.springboot.demo.data.JsonResult;
+import com.maven.springboot.demo.data.User;
 import com.maven.springboot.demo.server.TestService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 @RestController
 /**
  * @RequestMapping  可以全局控制url 路径
  * 如 ： http://localhost:8080/start/test/server?name=hahh
  * 
+ * 
+ * 
  */
 // @RequestMapping("/start")
+
+// `@Api` 注解用于类上，表示标识这个类是 swagger 的资源。
+// swagger-ui 地址  : http://localhost:8080/demo/swagger-ui.html#/Swagger2_%E5%9C%A8%E7%BA%BF%E6%8E%A5%E5%8F%A3
+@Api(tags = "Swagger2 在线接口")
 public class HelloController{
     private String template = "Hello, %s!  hot reload ";
     private AtomicLong counter = new AtomicLong();
     // 日志打印
     private static final Logger logger = LoggerFactory.getLogger(HelloController.class.getName());
+    //标记 @value  可以获取applicaiton.yml中的配置信息
+    @Value("${url.masterUrl}")
+    private String  orderUrl;
     
     @Resource
     private TestService testService;
+    @Resource
+    private ApplicationValues applicationValues;
 
-    @RequestMapping("/hello")
+
+    /**
+     * 如果没有指定   method 类型  ，swagger-ui 则会全部展示
+     * @return
+     */
+    @GetMapping(value = "/hello")
     public String hello(){
-        logger.warn("这是一段 slf4j的日志");
         return "say hello world";
     }
 
@@ -45,7 +71,7 @@ public class HelloController{
      * @param id
      * @return
      */
-    @RequestMapping(path = "/delete", method = {RequestMethod.GET, RequestMethod.POST}) 
+    @RequestMapping(path = "/delete", method = {RequestMethod.GET, RequestMethod.POST},produces = "application/json; charset=UTF-8") 
     public String delete(@RequestParam("id") String id) {
         return "Hello from delete";
     }
@@ -53,11 +79,52 @@ public class HelloController{
     /**
      * 携带默认参数值
      * @param name
+     * 如：http://localhost:8080/demo/greeting?name=xyz
      * @return 返回一个  默认对象 对外输出 为json 格式
      */
     @GetMapping("/greeting")
 	public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
 		return new Greeting(counter.incrementAndGet(), String.format(template, name));
+    }
+
+
+    /**
+     * 
+     *如果携带的参数 比较多 ，这时候  我们可以定义一个类来作为参数  比如提交一个用户form表单
+     *  使用实体类  接受参数 不用加  @RequestParam 注解了
+     */
+    @RequestMapping("/submit")
+    @ApiOperation(value = "提交用户信息")//`@ApiOperation` 注解用于方法，表示一个 http 请求的操作。
+    public User submitUserInfo(@ApiParam(value = "用户信息") User user){//`@ApiParam` 注解用于参数上，用来标明参数信息。
+        return user;
+    }
+
+
+
+    /**
+     * 以上说的都是 携带参数 ，下面是提交表单  在body里提交 
+     * 这时候  需要 @RequestBody 来接收
+     */
+
+     @RequestMapping("/submit/body")
+     public User submitUserInfoFromBody(@RequestBody User user){
+         return user;
+
+     }
+
+
+
+      /**
+       * restful Api  格式，获取携带参数
+       * greeing
+     * 携带默认参数值
+     * 如：http://localhost:8080/demo/user/wide_animals/3
+     *
+     */
+    @GetMapping("/user/{type}/{id}")
+	public Greeting greeting1(@PathVariable String type,@PathVariable int id) {
+
+		return new Greeting(counter.incrementAndGet(), String.format(template, String.format("type 为：%s id为：%d的用户", type,id)));
     }
 
     
@@ -91,7 +158,7 @@ public class HelloController{
     }
     
     /**
-     * 使用config  和bean配置
+     * 使用config  和bean配置,可以使得 bean 和 对应的已配置的config 在spring 容器中，提供对外服务
      */
 
      @GetMapping(path = "test/server")
@@ -101,6 +168,47 @@ public class HelloController{
      }
 
 
+     /**
+      * 使用 slf4j 日志，其他详细使用 可以在 application.yml 中配置 日志使用方式
+      */
+     @GetMapping("/printlog")
+     public void printLog(){
+        logger.debug("=====测试日志debug级别打印====");
+        logger.info("======测试日志info级别打印=====");
+        logger.error("=====测试日志error级别打印====");
+        logger.warn("======测试日志warn级别打印=====");
+
+        // 可以使用占位符打印出一些参数信息
+        String str1 = "blog.itcodai.com";
+        String str2 = "blog.csdn.net/eson_15";
+        logger.info("======倪升武的个人博客：{}；倪升武的CSDN博客：{}", str1, str2);
+     }
+
+
+
+     /**
+      *获取application.yml 单个value值方式  ，直接注解@Value()
+      * @return
+      */
+     @GetMapping("/application/url")
+     public String userApplicationValue(){
+       return String.format("获取applicaiton.yml中的配置订单地址：%s", orderUrl);
+     }
+
+
+      /**
+      *获取application.yml 多个值  我们可以定义一个 类专门来管理
+      * @return
+      */
+      @GetMapping("/application/urls")
+      public Map<String,String> userApplicationValues(){
+          Map<String,String> maps = new HashMap<>();
+          maps.put("masterUrl", applicationValues.getMasterUrl());
+          maps.put("userUrl", applicationValues.getUserUrl());
+          maps.put("shopUrl", applicationValues.getShopUrl());
+          maps.put("orderUrl", applicationValues.getOrderUrl());
+        return maps;
+      }
 
 
 

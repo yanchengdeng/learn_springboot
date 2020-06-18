@@ -1,0 +1,21 @@
+server:
+    port: 8080 # 设置服务端口
+    servlet:
+        contextPath: /demo  # 服务的路径  不写默认
+
+
+logging:
+  config: logback.xml # 日志的相关配置信息，都放在 `logback.xml` 文件中了
+  level:
+    com.maven.springboot.demo.control: trace # 指定具体的 mapper 中日志的输出级别，
+    #上面的配置表示 `com.itcodai.course03.dao` 包下的所有 mapper 
+    #日志输出级别为 trace，会将操作数据库的 sql 打印出来，开发时设置成 trace 方便定位问题，在生产环境上，将这个日志级别再设置成 error 级别即可
+
+url:
+  orderUrl: http://test.dyc.orderUrl.com
+  userUrl: http://test.dyc.userUrl.com
+  shopUrl: http://test.dyc.shopUrl.com
+  masterUrl: http://test.dyc.masterUrl.com
+
+swagger:
+  enable: true

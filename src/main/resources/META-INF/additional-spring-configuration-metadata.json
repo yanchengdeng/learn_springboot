@@ -1,0 +1,22 @@
+{"properties": [
+  {
+    "name": "url.order_url",
+    "type": "java.lang.String",
+    "description": "A description for 'url.order_url'"
+  },
+  {
+    "name": "url.orderUrl",
+    "type": "java.lang.String",
+    "description": "A description for 'url.orderUrl'"
+  },
+  {
+    "name": "url.orderUrl1",
+    "type": "java.lang.String",
+    "description": "A description for 'url.orderUrl1'"
+  },
+  {
+    "name": "swagger.enable",
+    "type": "java.lang.String",
+    "description": "A description for 'swagger.enable'"
+  }
+]}
