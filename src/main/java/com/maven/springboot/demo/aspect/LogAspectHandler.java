@@ -3,13 +3,11 @@ package com.maven.springboot.demo.aspect;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.fasterxml.jackson.core.JsonPointer;
-
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -152,11 +150,32 @@ public class LogAspectHandler {
     }
 
 
+    //返回结果处理
+    /**
+     * 
+     * @param jsonPointer
+     * @param result
+     * 
+     * 注意：  返回值的 名称 要和方法名称保持一致
+     */
     @AfterReturning(pointcut = "annotationCut()",returning = "result")
-    public void doAfterReturn(JoinPoint jsonPointer,Object result){
+    public void doAfterReturn(JoinPoint jPoint,Object result){
         logger.info("返回数据为{}",result+"增强版");
 
     }
+
+
+    //异常拦截
+    @AfterThrowing(pointcut = "pointCut()",throwing = "ex")
+    public void doHandlerEexception(JoinPoint jPoint,Throwable ex){
+        //TODO 
+
+        logger.warn("aop=================发现异常错误{}===", ex.getMessage());
+
+    }
+
+
+
 
 
     
