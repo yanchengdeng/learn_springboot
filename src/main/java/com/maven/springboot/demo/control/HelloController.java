@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -71,7 +72,7 @@ public class HelloController{
      * @param id
      * @return
      */
-    @RequestMapping(path = "/delete", method = {RequestMethod.GET, RequestMethod.POST},produces = "application/json; charset=UTF-8") 
+    @GetMapping(path = "/delete",produces = "application/json; charset=UTF-8") 
     public String delete(@RequestParam("id") String id) {
         return "Hello from delete";
     }
@@ -93,7 +94,7 @@ public class HelloController{
      *如果携带的参数 比较多 ，这时候  我们可以定义一个类来作为参数  比如提交一个用户form表单
      *  使用实体类  接受参数 不用加  @RequestParam 注解了
      */
-    @RequestMapping("/submit")
+    @PostMapping(value = "/submit")
     @ApiOperation(value = "提交用户信息")//`@ApiOperation` 注解用于方法，表示一个 http 请求的操作。
     public User submitUserInfo(@ApiParam(value = "用户信息") User user){//`@ApiParam` 注解用于参数上，用来标明参数信息。
         return user;
@@ -106,7 +107,7 @@ public class HelloController{
      * 这时候  需要 @RequestBody 来接收
      */
 
-     @RequestMapping("/submit/body")
+     @PostMapping("/submit/body")
      public User submitUserInfoFromBody(@RequestBody User user){
          return user;
 
