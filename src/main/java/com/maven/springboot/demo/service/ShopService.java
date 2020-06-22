@@ -3,6 +3,7 @@ package com.maven.springboot.demo.service;
 
 
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.maven.springboot.demo.entity.Shop;
@@ -15,5 +16,5 @@ public interface ShopService {
 
     List<Shop> findAll();
 
-    void inserShop(Shop shop);
+    void inserShop(Shop shop) throws SQLException;
 }

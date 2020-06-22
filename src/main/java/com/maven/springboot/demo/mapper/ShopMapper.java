@@ -3,6 +3,7 @@ package com.maven.springboot.demo.mapper;
 
 import com.maven.springboot.demo.entity.Shop;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
@@ -25,6 +26,11 @@ public interface ShopMapper {
       @Result(property = "info",column = "goods_info")
   })
   public Shop getById(long id);
+
+
+
+  @Insert("INSERT INTO goods VALUES(#{id},#{name},#{info})")
+  public void insert(long id,String name,String info);
 
     
 }

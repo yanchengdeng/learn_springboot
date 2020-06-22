@@ -12,6 +12,6 @@
 
 
      <select id="getShopByName" resultType="Shop" parameterType="String">
-       select * from goods where name = #{name}
+       select * from goods where goods_name = #{name}
     </select>
 </mapper>

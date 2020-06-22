@@ -1,14 +1,18 @@
 package com.maven.springboot.demo.control;
 
 import java.math.BigDecimal;
+import java.sql.SQLException;
 
 import javax.annotation.Resource;
 
 import com.maven.springboot.demo.entity.Shop;
 import com.maven.springboot.demo.service.ShopService;
 
+import org.mapstruct.ValueMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -33,6 +37,18 @@ public class TestMyBatisController {
     @GetMapping("/shop/ids/{id}")
     public Shop getById(@PathVariable Long id){
         return shopService.getById(id);
+    }
+
+
+
+    @PostMapping("/shop")
+    public boolean insertGoods(@RequestBody Shop shop) throws SQLException{
+        if(null != shop){
+            shopService.inserShop(shop);
+            return true;
+        }else{
+            return false;
+        }
     }
     
 }
