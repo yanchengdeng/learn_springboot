@@ -6,15 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import lombok.Synchronized;
-import sun.awt.www.content.audio.x_aiff;
-
 import java.sql.SQLException;
 import java.util.List;
-
 import javax.annotation.Resource;
-
 import com.maven.springboot.demo.entity.Shop;
 import com.maven.springboot.demo.mapper.ShopMapper;
 
@@ -63,7 +57,7 @@ public class ShopServiceImp  implements ShopService {
 	 */
 	@Override
 	@Transactional(rollbackFor = SQLException.class) //添加指定回滚异常  才生效
-	public  void inserShop(Shop shop) throws SQLException {
+	public  void insertShop(Shop shop) throws SQLException {
 		// try{
 			shopMapper.insert(shop.getId(),shop.getName(),shop.getInfo());
 			throw new SQLException("数据库插入失败");

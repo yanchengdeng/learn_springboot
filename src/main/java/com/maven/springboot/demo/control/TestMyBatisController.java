@@ -44,7 +44,7 @@ public class TestMyBatisController {
     @PostMapping("/shop")
     public boolean insertGoods(@RequestBody Shop shop) throws SQLException{
         if(null != shop){
-            shopService.inserShop(shop);
+            shopService.insertShop(shop);
             return true;
         }else{
             return false;

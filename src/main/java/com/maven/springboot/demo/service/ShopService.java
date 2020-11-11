@@ -16,5 +16,5 @@ public interface ShopService {
 
     List<Shop> findAll();
 
-    void inserShop(Shop shop) throws SQLException;
+    void insertShop(Shop shop) throws SQLException;
 }

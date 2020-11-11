@@ -133,7 +133,7 @@ public class LogAspectHandler {
          //记录一些请求信息
          ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
          HttpServletResponse response = attributes.getResponse();
-         logger.info("=======================请求地址url:{},请求ip:{}",response,response.getStatus());
+         logger.info("=======================响应数据:{},响应状态:{}",response.getHeaderNames(),response.getStatus());
 
     }
 
@@ -146,14 +146,14 @@ public class LogAspectHandler {
              //记录一些请求信息
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletResponse response = attributes.getResponse();
-        logger.info("=======================请求地址url:{},请求ip:{}",response,response.getStatus());
+        logger.info("=======================响应数据:{},响应状态:{}",response.getHeaderNames(),response.getStatus());
     }
 
 
     //返回结果处理
     /**
      * 
-     * @param jsonPointer
+     * @param jPoint
      * @param result
      * 
      * 注意：  返回值的 名称 要和方法名称保持一致
